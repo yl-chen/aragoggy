@@ -38,6 +38,13 @@ if len(sys.argv) !=3:
 	print('usage: <root url> <target folder to save>')
 	exit()
 
+tarURL = sys.argv[1]
+tarPath = sys.argv[2]
+
+print('Target: '+tarURL)
+print('Local folder: '+tarPath)
+print('------------------------------------------------------')
+	
 from pathlib import Path
 path = Path(tarPath)
 
@@ -52,10 +59,6 @@ if False == path.is_dir():
 if len(tarURL) == 0:
 	print('root URL is empty')
 	exit()
-
-print('Target: '+tarURL)
-print('Local folder: '+tarPath)
-print('------------------------------------------------------')
 	
 idxSlashSlash = tarURL.find('://', 0, len(tarURL))
 idxEndOfDomain = tarURL.find('/', idxSlashSlash+3, len(tarURL))
@@ -82,7 +85,7 @@ response = hget(strProtocol, "GET", strDomain, strReqLoc + '/1')
 
 html = response.read()
 print("Target connected. Under investigations...")
-print('')
+print('------------------------------------------------------')
 
 try: 
     from BeautifulSoup import BeautifulSoup
@@ -91,23 +94,21 @@ except ImportError:
 
 soup = BeautifulSoup(html, "lxml")
 
-# img.all_attrs
-#print("a >> "+ str(soup.find(id="defualtPagePic").attrs))
-# img.src
-#print("b >> "+ str(soup.find(id="defualtPagePic")['src']))
-#print("c >> "+ str(soup.find_all("select")))
-
+# get number of pages
 if len(soup.find_all("select")) != 1:
 	print('invalid length of <select> to parse')
 	exit()
 
 htmlSeleOptTags = soup.find_all("select")[0].find_all("option")
 
+# check each page
 for htmlOption in htmlSeleOptTags:
 	htmlOptVal = str(htmlOption['value'])
-	if htmlOptVal == '3':
-		print('stop for debugging')
-		exit()
+	
+	# [DEBUG] to stop the script
+#	if htmlOptVal == '3':
+#		print('stop for debugging')
+#		exit()
 	
 	sleepSecond = random.randint(0,2)
 	time.sleep(sleepSecond);
@@ -129,7 +130,16 @@ for htmlOption in htmlSeleOptTags:
 	
 	req = urllib.request.Request(imgURL, headers={'User-Agent': 'Mozilla/5.0'})
 	with urllib.request.urlopen(req) as response:
-		with open(tarPath + "/" + htmlOptVal + ".jpg", "wb") as the_file:
+		paddedZeros = 4 - len(htmlOptVal)
+		
+		if paddedZeros < 0:
+			paddedZeros = 4
+		
+		padding = ""
+		for x in range(paddedZeros):
+			padding += "0"
+		
+		with open(tarPath + "/" + padding + htmlOptVal + ".jpg", "wb") as the_file:
 			the_file.write(response.read())
 	
 print("process done")
