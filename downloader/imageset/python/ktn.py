@@ -8,7 +8,7 @@
 ## Requirement:
 ##   Python 3, BeautifulSoup, lxml
 ##
-## Parameters: <URL of image set> <folder to store>
+## Parameters: <URL of image set> <folder to store> (page number to start)
 ##
 ###########################################################
 
@@ -28,21 +28,26 @@ def hget(strProtocol, strMethod, strDomain, strPath):
 	httpConn.request(strMethod, strPath)
 	response = httpConn.getresponse()
 	if response.status != 200:
-		print("http " + strMethod + " failed on " + strPath)
+		print("http " + strMethod + " failed on " + strPath + " with status " + str(response.status))
 		exit()
 		
 	return response
 
-if len(sys.argv) !=3:
+if len(sys.argv) < 3:
 	print('wrong size of inputed arguments...; size: '+str(len(sys.argv)))
-	print('usage: <root url> <target folder to save>')
+	print('usage: <root url> <target folder to save> (page number that skip until it comes)')
 	exit()
 
 tarURL = sys.argv[1]
 tarPath = sys.argv[2]
 
+skipNum = ""
+if len(sys.argv) > 3:
+	skipNum = sys.argv[3]
+
 print('Target: '+tarURL)
 print('Local folder: '+tarPath)
+print('Skip until: '+skipNum)
 print('------------------------------------------------------')
 	
 from pathlib import Path
@@ -59,6 +64,9 @@ if False == path.is_dir():
 if len(tarURL) == 0:
 	print('root URL is empty')
 	exit()
+	
+if skipNum != "":
+	int(skipNum)
 	
 idxSlashSlash = tarURL.find('://', 0, len(tarURL))
 idxEndOfDomain = tarURL.find('/', idxSlashSlash+3, len(tarURL))
@@ -109,6 +117,10 @@ for htmlOption in htmlSeleOptTags:
 #	if htmlOptVal == '3':
 #		print('stop for debugging')
 #		exit()
+
+	if skipNum != "":
+		if int(htmlOptVal) < int(skipNum):
+			continue
 	
 	sleepSecond = random.randint(0,2)
 	time.sleep(sleepSecond);
@@ -124,8 +136,13 @@ for htmlOption in htmlSeleOptTags:
 #	print('==========================')
 	
 	soup2 = BeautifulSoup(html, "lxml")
+	foundImgTag = soup2.find(id="defualtPagePic")
 	
-	imgURL = str(soup2.find(id="defualtPagePic")['src'])
+	if foundImgTag == None:
+		print("ignore page " + htmlOptVal)
+		continue
+	
+	imgURL = str(foundImgTag['src'])
 	print("img>>"+imgURL)
 	
 	req = urllib.request.Request(imgURL, headers={'User-Agent': 'Mozilla/5.0'})
