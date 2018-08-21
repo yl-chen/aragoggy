@@ -20,7 +20,6 @@ def hget(strProtocol, strMethod, strDomain, strPath):
 		httpConn = http.client.HTTPConnection(strDomain)
 	elif strProtocol == 'https':
 		httpConn = http.client.HTTPSConnection(strDomain)
-		return httpConn
 	else:
 		print('unknow protocol: '+strProtocol)
 		exit()
