@@ -1,11 +1,5 @@
 # aragoggy
 Little spiders for specified targets : )
 
-# More info (secret)
-gI2CUcBwtMtUPAzIyppOvAdT2HUM4j0ifLLaMdFkq24TnclF7f9+dgTQcKyUrEbc
-Y9CbMADdSvqK6SRXUUpxtw==
-
-To those who can decrypt.
-
-# Secret key
-c2VjcmV0
+# More info
+YXJhZ29nZ3kvZG93bmxvYWRlci9pbWFnZXNldC9weXRob24va3RuLnB5IOWNoeaPkOirvnjmj6rmvKvnlasgY29taWMuY2sxMDEuY29tDQphcmFnb2dneS9kb3dubG9hZGVyL2ltYWdlc2V0L3B5dGhvbi9kbGN0bS5weSDli5XmvKvni4Igd3d3LmNhcnRvb25tYWQuY29t
