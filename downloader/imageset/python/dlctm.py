@@ -175,16 +175,16 @@ for chapterReqLoc in listChapters:
 	
 	print('number of option: ' + str(len(htmlSeleOptTags)))
 	
+	# create folder for the chapter
+	strChapterFolderPath = tarPath + '/' + chapterReqLoc[7 + len(strComicId):len(chapterReqLoc) - 5 - 3];
+	if not os.path.exists(strChapterFolderPath):
+		os.makedirs(strChapterFolderPath)
+	
 	for optTag in htmlSeleOptTags:
 		# option's value; such as 749100142022001.html
 		optTagVal = str(optTag['value'])
 		
 		print('taking image from ' + optTagVal)
-		
-		# create folder for the chapter
-		strChapterFolderPath = tarPath + '/' + optTagVal[0:len(optTagVal) - 5];
-		if not os.path.exists(strChapterFolderPath):
-			os.makedirs(strChapterFolderPath)
 		
 		response = hget(strProtocol, "GET", strDomain, '/comic/'+optTagVal)
 		html = response.read()
