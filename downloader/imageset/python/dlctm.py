@@ -196,7 +196,7 @@ for chapterReqLoc in listChapters:
 			imgURL = imgTag['src']
 			
 			# target found
-			if imgURL.startswith('http://web.'+secret1+'o'+secret2+'m/'):
+			if imgURL.startswith('http://web.'+secret1+'o'+secret2+'m/') or imgURL.startswith('http://web2.'+secret1+'o'+secret2+'m/'):
 				dl2(imgURL, strChapterFolderPath + '/' + imgURL[len(imgURL)-7:len(imgURL)])
 				break
 			
