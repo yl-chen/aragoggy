@@ -7,7 +7,6 @@
 ##
 ## Requirement:
 ##   Python 3, BeautifulSoup, lxml
-## https://www.cartoonmad.com/comic/7491.html
 ## Parameters: <URL of image set> <folder to store> (page number to start)
 ##
 ###########################################################
